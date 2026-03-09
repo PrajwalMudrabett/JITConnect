@@ -22,13 +22,13 @@
 
 body {
     font-family: 'Montserrat', sans-serif;
-    background: var(--ferrari-black);
-    color: var(--ferrari-white);
+    background: transparent;
+    color: #1A1A1A;
     overflow-x: hidden;
     line-height: 1.6;
 }
 
-/* ===== BACKGROUND SYSTEM WITH JIT IMAGES ===== */
+/* ===== BACKGROUND SYSTEM WITH CLEAR JIT IMAGES ===== */
 .background-wrapper {
     position: fixed;
     inset: 0;
@@ -37,7 +37,6 @@ body {
     background-size: cover;
     background-position: center;
     background-attachment: fixed;
-    animation: backgroundPulse 20s ease-in-out infinite;
 }
 
 /* Different backgrounds for different pages */
@@ -65,8 +64,8 @@ body.page-messages .background-wrapper {
 .overlay {
     position: absolute;
     inset: 0;
-    background: linear-gradient(135deg, rgba(0,0,0,0.92) 0%, rgba(220,0,0,0.25) 50%, rgba(0,0,0,0.92) 100%);
-    backdrop-filter: blur(3px);
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(0px);
 }
 
 /* ===== TYPOGRAPHY ===== */
@@ -106,12 +105,12 @@ p {
 .login-card {
     width: 100%;
     max-width: 500px;
-    background: rgba(26, 26, 26, 0.95);
-    backdrop-filter: blur(20px);
-    border: 1px solid rgba(220, 0, 0, 0.3);
+    background: rgba(255, 255, 255, 0.92);
+    backdrop-filter: blur(10px);
+    border: 2px solid rgba(220, 0, 0, 0.3);
     padding: 60px 50px;
     border-radius: 0;
-    box-shadow: var(--shadow-intense);
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
     animation: slideUp 0.8s cubic-bezier(0.16, 1, 0.3, 1);
     position: relative;
     overflow: hidden;
@@ -169,10 +168,10 @@ p {
     font-size: 48px;
     font-weight: 900;
     letter-spacing: 3px;
-    color: var(--ferrari-white);
+    color: var(--ferrari-red);
     text-transform: uppercase;
     margin-bottom: 10px;
-    text-shadow: 0 0 30px rgba(220, 0, 0, 0.5);
+    text-shadow: 0 2px 10px rgba(220, 0, 0, 0.3);
 }
 
 .tagline {
@@ -186,7 +185,7 @@ p {
 
 .subtitle {
     font-size: 12px;
-    color: rgba(255, 255, 255, 0.5);
+    color: rgba(0, 0, 0, 0.6);
     letter-spacing: 2px;
     text-transform: uppercase;
 }
@@ -203,6 +202,7 @@ p {
     font-weight: 800;
     letter-spacing: 1px;
     text-transform: uppercase;
+    color: #1A1A1A;
 }
 
 .input-group {
@@ -215,9 +215,9 @@ p {
 .input-group textarea {
     width: 100%;
     padding: 18px 20px;
-    background: rgba(0, 0, 0, 0.5);
-    border: 2px solid rgba(255, 255, 255, 0.1);
-    color: var(--ferrari-white);
+    background: rgba(255, 255, 255, 0.8);
+    border: 2px solid rgba(220, 0, 0, 0.2);
+    color: #1A1A1A;
     font-size: 15px;
     font-family: 'Montserrat', sans-serif;
     font-weight: 500;
@@ -229,7 +229,7 @@ p {
 .input-group input::placeholder,
 .input-group select::placeholder,
 .input-group textarea::placeholder {
-    color: rgba(255, 255, 255, 0.4);
+    color: rgba(0, 0, 0, 0.4);
     text-transform: uppercase;
     font-size: 12px;
     letter-spacing: 1px;
@@ -240,8 +240,8 @@ p {
 .input-group textarea:focus {
     outline: none;
     border-color: var(--ferrari-red);
-    background: rgba(220, 0, 0, 0.05);
-    box-shadow: 0 0 20px rgba(220, 0, 0, 0.3);
+    background: rgba(255, 255, 255, 0.95);
+    box-shadow: 0 0 20px rgba(220, 0, 0, 0.2);
     transform: translateY(-2px);
 }
 
@@ -295,7 +295,7 @@ p {
     text-align: center;
     margin-top: 30px;
     font-size: 13px;
-    color: rgba(255, 255, 255, 0.6);
+    color: rgba(0, 0, 0, 0.7);
     letter-spacing: 1px;
 }
 
@@ -367,11 +367,11 @@ p {
     position: sticky;
     top: 30px;
     height: fit-content;
-    background: rgba(26, 26, 26, 0.95);
-    backdrop-filter: blur(20px);
-    border: 1px solid rgba(220, 0, 0, 0.2);
+    background: rgba(255, 255, 255, 0.92);
+    backdrop-filter: blur(10px);
+    border: 2px solid rgba(220, 0, 0, 0.2);
     padding: 40px 0;
-    box-shadow: var(--shadow-soft);
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
 }
 
 .sidebar-logo {
@@ -379,11 +379,11 @@ p {
     font-weight: 900;
     letter-spacing: 2px;
     text-transform: uppercase;
-    color: var(--ferrari-white);
+    color: var(--ferrari-red);
     text-align: center;
     margin-bottom: 50px;
     padding: 0 20px;
-    text-shadow: 0 0 20px rgba(220, 0, 0, 0.5);
+    text-shadow: 0 2px 10px rgba(220, 0, 0, 0.3);
 }
 
 /* JIT Logo Integration */
@@ -415,7 +415,7 @@ p {
     gap: 15px;
     padding: 18px 30px;
     text-decoration: none;
-    color: rgba(255, 255, 255, 0.6);
+    color: rgba(0, 0, 0, 0.7);
     font-weight: 600;
     font-size: 13px;
     letter-spacing: 1px;
@@ -442,12 +442,12 @@ p {
 }
 
 .create-post-card {
-    background: rgba(26, 26, 26, 0.95);
-    backdrop-filter: blur(20px);
-    border: 1px solid rgba(220, 0, 0, 0.2);
+    background: rgba(255, 255, 255, 0.92);
+    backdrop-filter: blur(10px);
+    border: 2px solid rgba(220, 0, 0, 0.2);
     padding: 40px;
     margin-bottom: 30px;
-    box-shadow: var(--shadow-soft);
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
 }
 
 .create-post-card h3 {
@@ -455,15 +455,16 @@ p {
     font-weight: 800;
     letter-spacing: 1px;
     text-transform: uppercase;
+    color: #1A1A1A;
 }
 
 .create-post-textarea {
     width: 100%;
     min-height: 120px;
     padding: 20px;
-    background: rgba(0, 0, 0, 0.5);
-    border: 2px solid rgba(255, 255, 255, 0.1);
-    color: var(--ferrari-white);
+    background: rgba(255, 255, 255, 0.8);
+    border: 2px solid rgba(220, 0, 0, 0.2);
+    color: #1A1A1A;
     font-family: 'Montserrat', sans-serif;
     font-size: 15px;
     resize: vertical;
@@ -473,7 +474,7 @@ p {
 .create-post-textarea:focus {
     outline: none;
     border-color: var(--ferrari-red);
-    background: rgba(220, 0, 0, 0.05);
+    background: rgba(255, 255, 255, 0.95);
 }
 
 .post-actions {
@@ -503,14 +504,15 @@ p {
 
 /* ===== POST CARD WITH JIT IMAGES ===== */
 .post-card {
-    background: rgba(26, 26, 26, 0.95);
-    backdrop-filter: blur(20px);
-    border: 1px solid rgba(220, 0, 0, 0.2);
+    background: rgba(255, 255, 255, 0.92);
+    backdrop-filter: blur(10px);
+    border: 2px solid rgba(220, 0, 0, 0.2);
     padding: 40px;
     margin-bottom: 30px;
     transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
     position: relative;
     overflow: hidden;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
 }
 
 .post-card::after {
@@ -531,7 +533,7 @@ p {
 
 .post-card:hover {
     transform: translateY(-5px);
-    box-shadow: 0 20px 60px rgba(220, 0, 0, 0.3);
+    box-shadow: 0 20px 60px rgba(220, 0, 0, 0.25);
     border-color: var(--ferrari-red);
 }
 
@@ -568,11 +570,12 @@ p {
     font-weight: 800;
     letter-spacing: 0.5px;
     margin-bottom: 5px;
+    color: #1A1A1A;
 }
 
 .post-meta {
     font-size: 11px;
-    color: rgba(255, 255, 255, 0.4);
+    color: rgba(0, 0, 0, 0.5);
     letter-spacing: 1px;
     text-transform: uppercase;
 }
@@ -589,43 +592,44 @@ p {
 }
 
 .role-badge.student {
-    background: rgba(59, 130, 246, 0.2);
-    color: #3B82F6;
+    background: rgba(59, 130, 246, 0.3);
+    color: #1E40AF;
 }
 
 .role-badge.faculty {
-    background: rgba(139, 92, 246, 0.2);
-    color: #8B5CF6;
+    background: rgba(139, 92, 246, 0.3);
+    color: #6B21A8;
 }
 
 .role-badge.alumni {
-    background: rgba(16, 185, 129, 0.2);
-    color: #10B981;
+    background: rgba(16, 185, 129, 0.3);
+    color: #065F46;
 }
 
 .role-badge.department {
-    background: rgba(245, 158, 11, 0.2);
-    color: #F59E0B;
+    background: rgba(245, 158, 11, 0.3);
+    color: #92400E;
 }
 
 .post-content {
     margin: 25px 0;
     line-height: 1.8;
     font-size: 15px;
+    color: #1A1A1A;
 }
 
 .post-image {
     width: 100%;
     margin-top: 25px;
-    filter: brightness(0.9) contrast(1.1);
+    filter: brightness(1) contrast(1.05);
     transition: all 0.4s ease;
     border: 2px solid rgba(220, 0, 0, 0.2);
 }
 
 .post-image:hover {
-    filter: brightness(1) contrast(1.2);
+    filter: brightness(1.05) contrast(1.1);
     border-color: var(--ferrari-red);
-    box-shadow: 0 10px 30px rgba(220, 0, 0, 0.4);
+    box-shadow: 0 10px 30px rgba(220, 0, 0, 0.3);
 }
 
 .post-interactions {
@@ -641,7 +645,7 @@ p {
     gap: 8px;
     background: none;
     border: none;
-    color: rgba(255, 255, 255, 0.5);
+    color: rgba(0, 0, 0, 0.6);
     cursor: pointer;
     font-size: 13px;
     font-weight: 700;
@@ -663,12 +667,12 @@ p {
 }
 
 .panel-card {
-    background: rgba(26, 26, 26, 0.95);
-    backdrop-filter: blur(20px);
-    border: 1px solid rgba(220, 0, 0, 0.2);
+    background: rgba(255, 255, 255, 0.92);
+    backdrop-filter: blur(10px);
+    border: 2px solid rgba(220, 0, 0, 0.2);
     padding: 30px;
     margin-bottom: 30px;
-    box-shadow: var(--shadow-soft);
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
 }
 
 .panel-card h3 {
@@ -677,6 +681,7 @@ p {
     letter-spacing: 1px;
     text-transform: uppercase;
     font-size: 16px;
+    color: #1A1A1A;
 }
 
 .suggestion-item {
@@ -685,8 +690,8 @@ p {
     gap: 15px;
     padding: 15px;
     margin-bottom: 15px;
-    background: rgba(0, 0, 0, 0.3);
-    border: 1px solid rgba(255, 255, 255, 0.05);
+    background: rgba(255, 255, 255, 0.6);
+    border: 1px solid rgba(220, 0, 0, 0.2);
     transition: all 0.3s ease;
 }
 
@@ -704,11 +709,12 @@ p {
     font-size: 14px;
     font-weight: 700;
     margin-bottom: 4px;
+    color: #1A1A1A;
 }
 
 .suggestion-info p {
     font-size: 11px;
-    color: rgba(255, 255, 255, 0.5);
+    color: rgba(0, 0, 0, 0.6);
     letter-spacing: 0.5px;
 }
 
