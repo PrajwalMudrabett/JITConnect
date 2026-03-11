@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import Sidebar from '../components/Sidebar';
-import { usersAPI, postsAPI } from '../services/api';
+import { usersAPI, postsAPI, researchAPI } from '../services/api';
 
 function Profile() {
   const [user, setUser] = useState(null);
@@ -20,11 +20,16 @@ function Profile() {
     experience: '',
     profilePic: ''
   });
+  const [researchOpportunities, setResearchOpportunities] = useState([]);
+  const [showResearch, setShowResearch] = useState(false);
 
   useEffect(() => {
     fetchUserData();
     fetchUserPosts();
-  }, []);
+    if (user?.role === 'student') {
+      fetchResearchOpportunities();
+    }
+  }, [user]);
 
   const fetchUserData = async () => {
     try {
@@ -56,6 +61,18 @@ function Profile() {
       setUserPosts(filtered);
     } catch (err) {
       console.error('Error fetching posts:', err);
+    }
+  };
+
+  const fetchResearchOpportunities = async () => {
+    try {
+      const data = await researchAPI.getAll();
+      if (Array.isArray(data)) {
+        setResearchOpportunities(data);
+        setShowResearch(data.length > 0);
+      }
+    } catch (err) {
+      console.error('Error fetching research opportunities:', err);
     }
   };
 
@@ -387,6 +404,63 @@ function Profile() {
               ))
             )}
           </div>
+
+          {/* Research Opportunities for Students */}
+          {showResearch && user.role === 'student' && (
+            <div style={{ 
+              background: 'rgba(255, 255, 255, 0.92)', 
+              backdropFilter: 'blur(10px)', 
+              border: '2px solid rgba(220, 0, 0, 0.2)', 
+              padding: '30px',
+              boxShadow: '0 10px 40px rgba(0, 0, 0, 0.15)',
+              marginTop: '20px'
+            }}>
+              <h3 style={{ 
+                marginBottom: '20px', 
+                fontWeight: '800', 
+                letterSpacing: '1px', 
+                textTransform: 'uppercase',
+                color: '#1A1A1A'
+              }}>
+                🔬 RESEARCH OPPORTUNITIES
+              </h3>
+              <div style={{ display: 'grid', gap: '15px' }}>
+                {researchOpportunities.map((research) => (
+                  <div key={research._id} style={{ 
+                    padding: '20px', 
+                    background: 'rgba(255, 255, 255, 0.6)',
+                    border: '1px solid rgba(220, 0, 0, 0.1)',
+                    borderRadius: '8px'
+                  }}>
+                    <h4 style={{ margin: '0 0 10px 0', fontSize: '16px', fontWeight: '700', color: '#1A1A1A' }}>
+                      {research.title}
+                    </h4>
+                    <p style={{ margin: '0 0 10px 0', fontSize: '14px', color: 'rgba(0, 0, 0, 0.7)' }}>
+                      {research.description}
+                    </p>
+                    <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap', marginBottom: '10px' }}>
+                      {research.skillsNeeded?.map((skill, index) => (
+                        <span key={index} style={{
+                          padding: '4px 10px',
+                          background: 'rgba(220, 0, 0, 0.1)',
+                          fontSize: '12px',
+                          fontWeight: '600',
+                          color: 'var(--ferrari-red)',
+                          borderRadius: '4px'
+                        }}>
+                          {skill}
+                        </span>
+                      ))}
+                    </div>
+                    <p style={{ margin: 0, fontSize: '12px', color: 'rgba(0, 0, 0, 0.5)' }}>
+                      <strong>Faculty:</strong> {research.facultyMember?.name || 'Unknown'}
+                      {research.facultyMember?.department && ` • ${research.facultyMember.department}`}
+                    </p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
         </main>
       </div>
     </div>

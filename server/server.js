@@ -10,6 +10,8 @@ import notificationRoutes from './routes/notificationRoutes.js';
 import adminRoutes from './routes/adminRoutes.js';
 import announcementRoutes from './routes/announcementRoutes.js';
 import jobRoutes from './routes/jobRoutes.js';
+import researchRoutes from './routes/researchRoutes.js';
+import eventRoutes from './routes/eventRoutes.js';
 
 // Load env vars
 dotenv.config();
@@ -33,6 +35,8 @@ app.use('/api/notifications', notificationRoutes);
 app.use('/api/admin', adminRoutes);
 app.use('/api/announcements', announcementRoutes);
 app.use('/api/jobs', jobRoutes);
+app.use('/api/research', researchRoutes);
+app.use('/api/events', eventRoutes);
 
 // Root route
 app.get('/', (req, res) => {

@@ -5,7 +5,7 @@ function Sidebar() {
   const location = useLocation();
   const navigate = useNavigate();
   const userData = JSON.parse(localStorage.getItem('userData') || '{}');
-  const isAdmin = userData.email === 'admin@jyothyit.ac.in' || userData.email === 'principal@jyothyit.ac.in';
+  const isAdmin = userData.isAdmin;
 
   const handleLogout = () => {
     localStorage.clear();

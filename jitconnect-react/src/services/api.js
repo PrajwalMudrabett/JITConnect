@@ -385,3 +385,80 @@ export const jobsAPI = {
     return response.json();
   },
 };
+// Research API
+export const researchAPI = {
+  getAll: async () => {
+    const response = await fetch(`${API_URL}/research`, {
+      headers: {
+        'Authorization': `Bearer ${getToken()}`,
+      },
+    });
+    return response.json();
+  },
+
+  create: async (researchData) => {
+    const response = await fetch(`${API_URL}/research`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${getToken()}`,
+      },
+      body: JSON.stringify(researchData),
+    });
+    return response.json();
+  },
+
+  apply: async (researchId) => {
+    const response = await fetch(`${API_URL}/research/${researchId}/apply`, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${getToken()}`,
+      },
+    });
+    return response.json();
+  },
+
+  delete: async (researchId) => {
+    const response = await fetch(`${API_URL}/research/${researchId}`, {
+      method: 'DELETE',
+      headers: {
+        'Authorization': `Bearer ${getToken()}`,
+      },
+    });
+    return response.json();
+  },
+};
+
+// Events API
+export const eventsAPI = {
+  getAll: async () => {
+    const response = await fetch(`${API_URL}/events`, {
+      headers: {
+        'Authorization': `Bearer ${getToken()}`,
+      },
+    });
+    return response.json();
+  },
+
+  create: async (eventData) => {
+    const response = await fetch(`${API_URL}/events`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${getToken()}`,
+      },
+      body: JSON.stringify(eventData),
+    });
+    return response.json();
+  },
+
+  delete: async (eventId) => {
+    const response = await fetch(`${API_URL}/events/${eventId}`, {
+      method: 'DELETE',
+      headers: {
+        'Authorization': `Bearer ${getToken()}`,
+      },
+    });
+    return response.json();
+  },
+};

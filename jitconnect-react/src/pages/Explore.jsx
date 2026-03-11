@@ -1,15 +1,18 @@
 import { useState, useEffect } from 'react';
 import Sidebar from '../components/Sidebar';
-import { usersAPI } from '../services/api';
+import { usersAPI, eventsAPI } from '../services/api';
 
 function Explore() {
   const [searchQuery, setSearchQuery] = useState('');
   const [allPeople, setAllPeople] = useState([]);
   const [filteredPeople, setFilteredPeople] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [events, setEvents] = useState([]);
+  const [showEvents, setShowEvents] = useState(false);
 
   useEffect(() => {
     fetchUsers();
+    fetchEvents();
   }, []);
 
   const fetchUsers = async () => {
@@ -21,6 +24,18 @@ function Explore() {
       }
     } catch (err) {
       console.error('Error fetching users:', err);
+    }
+  };
+
+  const fetchEvents = async () => {
+    try {
+      const data = await eventsAPI.getAll();
+      if (Array.isArray(data)) {
+        setEvents(data);
+        setShowEvents(data.length > 0);
+      }
+    } catch (err) {
+      console.error('Error fetching events:', err);
     }
   };
 
@@ -111,6 +126,53 @@ function Explore() {
               ))
             )}
           </div>
+
+          {/* Department Events Banner */}
+          {showEvents && (
+            <div style={{ 
+              background: 'rgba(255, 255, 255, 0.92)', 
+              backdropFilter: 'blur(10px)', 
+              border: '2px solid rgba(220, 0, 0, 0.2)', 
+              padding: '30px', 
+              marginTop: '30px',
+              boxShadow: '0 10px 40px rgba(0, 0, 0, 0.15)'
+            }}>
+              <h3 style={{ marginBottom: '20px', fontWeight: 800, letterSpacing: '1px', textTransform: 'uppercase', color: '#1A1A1A' }}>
+                📅 UPCOMING EVENTS
+              </h3>
+              <div style={{ display: 'grid', gap: '15px' }}>
+                {events.map((event) => (
+                  <div key={event._id} style={{ 
+                    padding: '20px', 
+                    background: 'rgba(255, 255, 255, 0.6)',
+                    border: '1px solid rgba(220, 0, 0, 0.1)',
+                    borderRadius: '8px'
+                  }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px' }}>
+                      <h4 style={{ margin: 0, fontSize: '16px', fontWeight: '700', color: '#1A1A1A' }}>
+                        {event.title}
+                      </h4>
+                      <span style={{ 
+                        fontSize: '12px', 
+                        color: 'rgba(0, 0, 0, 0.6)',
+                        background: 'rgba(220, 0, 0, 0.1)',
+                        padding: '4px 10px',
+                        borderRadius: '4px'
+                      }}>
+                        {new Date(event.date).toLocaleDateString()}
+                      </span>
+                    </div>
+                    <p style={{ margin: '0 0 10px 0', fontSize: '14px', color: 'rgba(0, 0, 0, 0.7)' }}>
+                      {event.description}
+                    </p>
+                    <p style={{ margin: 0, fontSize: '12px', color: 'rgba(0, 0, 0, 0.5)' }}>
+                      <strong>Location:</strong> {event.location}
+                    </p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
         </main>
       </div>
     </div>

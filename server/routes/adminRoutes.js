@@ -3,17 +3,9 @@ import User from '../models/User.js';
 import Post from '../models/Post.js';
 import Message from '../models/Message.js';
 import Notification from '../models/Notification.js';
-import { protect } from '../middleware/auth.js';
+import { protect, adminOnly } from '../middleware/auth.js';
 
 const router = express.Router();
-
-// Admin middleware
-const adminOnly = (req, res, next) => {
-  if (req.user.email !== 'admin@jyothyit.ac.in' && req.user.email !== 'principal@jyothyit.ac.in') {
-    return res.status(403).json({ message: 'Access denied. Admin only.' });
-  }
-  next();
-};
 
 // @route   GET /api/admin/stats
 // @desc    Get dashboard statistics

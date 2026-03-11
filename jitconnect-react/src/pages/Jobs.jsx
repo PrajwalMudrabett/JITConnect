@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Sidebar from '../components/Sidebar';
-import { jobsAPI } from '../services/api';
+import { jobsAPI, announcementsAPI } from '../services/api';
 
 function Jobs() {
   const [jobs, setJobs] = useState([]);
@@ -28,6 +28,8 @@ function Jobs() {
     applicationEmail: '',
     deadline: ''
   });
+  const [recommendations, setRecommendations] = useState([]);
+  const [showRecommendations, setShowRecommendations] = useState(false);
 
   const navigate = useNavigate();
   const userData = JSON.parse(localStorage.getItem('userData') || '{}');
@@ -35,6 +37,7 @@ function Jobs() {
 
   useEffect(() => {
     fetchJobs();
+    fetchRecommendations();
   }, []);
 
   useEffect(() => {
@@ -51,6 +54,23 @@ function Jobs() {
       console.error('Error fetching jobs:', err);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const fetchRecommendations = async () => {
+    try {
+      const data = await announcementsAPI.getAll();
+      if (Array.isArray(data)) {
+        const jobAnnouncements = data.filter(ann => 
+          ann.content?.toLowerCase().includes('job') || 
+          ann.content?.toLowerCase().includes('opening') ||
+          ann.content?.toLowerCase().includes('vacancy')
+        );
+        setRecommendations(jobAnnouncements);
+        setShowRecommendations(jobAnnouncements.length > 0);
+      }
+    } catch (err) {
+      console.error('Error fetching recommendations:', err);
     }
   };
 
@@ -261,6 +281,43 @@ function Jobs() {
               {filteredJobs.length} results
             </p>
           </div>
+
+          {/* Role-Based Recommendations */}
+          {showRecommendations && (
+            <div style={{ 
+              background: 'white', 
+              padding: '24px', 
+              marginBottom: '16px',
+              borderRadius: '8px',
+              boxShadow: '0 0 0 1px rgba(0,0,0,0.08), 0 2px 4px rgba(0,0,0,0.08)'
+            }}>
+              <h3 style={{ 
+                fontSize: '16px', 
+                fontWeight: '600', 
+                marginBottom: '16px',
+                color: '#000000'
+              }}>
+                📢 RECOMMENDED ANNOUNCEMENTS
+              </h3>
+              <div style={{ display: 'grid', gap: '12px' }}>
+                {recommendations.map((ann) => (
+                  <div key={ann._id} style={{ 
+                    padding: '16px', 
+                    background: 'rgba(220, 0, 0, 0.05)',
+                    borderRadius: '6px',
+                    border: '1px solid rgba(220, 0, 0, 0.1)'
+                  }}>
+                    <h4 style={{ margin: '0 0 8px 0', fontSize: '14px', fontWeight: '600', color: '#1A1A1A' }}>
+                      {ann.title}
+                    </h4>
+                    <p style={{ margin: 0, fontSize: '12px', color: 'rgba(0,0,0,0.6)' }}>
+                      {ann.content}
+                    </p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
 
           {/* Jobs List */}
           {loading ? (

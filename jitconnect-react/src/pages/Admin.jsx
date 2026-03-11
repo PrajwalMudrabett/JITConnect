@@ -13,13 +13,14 @@ function Admin() {
   const [announcementForm, setAnnouncementForm] = useState({
     title: '',
     content: '',
-    priority: 'medium'
+    priority: 'medium',
+    targetRoles: ['student', 'faculty', 'alumni', 'department']
   });
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   const userData = JSON.parse(localStorage.getItem('userData') || '{}');
-  const isAdmin = userData.email === 'admin@jyothyit.ac.in' || userData.email === 'principal@jyothyit.ac.in';
+  const isAdmin = userData.isAdmin;
 
   useEffect(() => {
     if (!isAdmin) {
@@ -174,7 +175,7 @@ function Admin() {
       const data = await response.json();
       alert('Announcement created successfully!');
       setShowAnnouncementModal(false);
-      setAnnouncementForm({ title: '', content: '', priority: 'medium' });
+      setAnnouncementForm({ title: '', content: '', priority: 'medium', targetRoles: ['student', 'faculty', 'alumni', 'department'] });
       fetchAnnouncements();
     } catch (err) {
       alert('Error creating announcement');

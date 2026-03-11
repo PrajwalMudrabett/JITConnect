@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import Sidebar from '../components/Sidebar';
-import { postsAPI, usersAPI } from '../services/api';
+import { postsAPI, usersAPI, announcementsAPI } from '../services/api';
 
 function Dashboard() {
   const [posts, setPosts] = useState([]);
@@ -10,10 +10,13 @@ function Dashboard() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [suggestions, setSuggestions] = useState([]);
+  const [announcements, setAnnouncements] = useState([]);
+  const [showAnnouncements, setShowAnnouncements] = useState(false);
 
   useEffect(() => {
     fetchPosts();
     fetchSuggestions();
+    fetchAnnouncements();
   }, []);
 
   const fetchPosts = async () => {
@@ -35,6 +38,18 @@ function Dashboard() {
       }
     } catch (err) {
       console.error('Error fetching suggestions:', err);
+    }
+  };
+
+  const fetchAnnouncements = async () => {
+    try {
+      const data = await announcementsAPI.getAll();
+      if (Array.isArray(data)) {
+        setAnnouncements(data);
+        setShowAnnouncements(data.length > 0);
+      }
+    } catch (err) {
+      console.error('Error fetching announcements:', err);
     }
   };
 
@@ -127,6 +142,16 @@ function Dashboard() {
     }
   };
 
+  const getPriorityColor = (priority) => {
+    switch (priority) {
+      case 'urgent': return '#DC0000';
+      case 'high': return '#FF6B00';
+      case 'medium': return '#FFA500';
+      case 'low': return '#00C853';
+      default: return '#666';
+    }
+  };
+
   return (
     <div className="page-dashboard">
       <div className="background-wrapper">
@@ -165,6 +190,58 @@ function Dashboard() {
               </div>
             </div>
           </div>
+
+          {/* Announcements Banner */}
+          {showAnnouncements && (
+            <div style={{ 
+              background: 'linear-gradient(135deg, rgba(220, 0, 0, 0.95) 0%, rgba(200, 0, 0, 0.95) 100%)',
+              color: 'white',
+              padding: '20px',
+              marginBottom: '30px',
+              borderRadius: '8px',
+              boxShadow: '0 4px 20px rgba(0, 0, 0, 0.2)'
+            }}>
+              <h3 style={{ margin: '0 0 15px 0', fontSize: '18px', fontWeight: '700', textTransform: 'uppercase' }}>
+                📢 ANNOUNCEMENTS
+              </h3>
+              <div style={{ display: 'flex', gap: '20px', overflowX: 'auto', paddingBottom: '10px' }}>
+                {announcements.map((ann) => (
+                  <div key={ann._id} style={{ 
+                    minWidth: '300px', 
+                    background: 'rgba(255, 255, 255, 0.1)',
+                    padding: '15px',
+                    borderRadius: '6px',
+                    backdropFilter: 'blur(10px)'
+                  }}>
+                    <div style={{ 
+                      display: 'flex', 
+                      alignItems: 'center', 
+                      gap: '8px', 
+                      marginBottom: '8px',
+                      fontSize: '12px'
+                    }}>
+                      <span style={{
+                        padding: '2px 8px',
+                        background: getPriorityColor(ann.priority),
+                        borderRadius: '4px',
+                        fontWeight: '700',
+                        textTransform: 'uppercase',
+                        fontSize: '10px'
+                      }}>
+                        {ann.priority}
+                      </span>
+                    </div>
+                    <h4 style={{ margin: '0 0 8px 0', fontSize: '14px', fontWeight: '700' }}>
+                      {ann.title}
+                    </h4>
+                    <p style={{ margin: 0, fontSize: '12px', opacity: 0.9, lineHeight: '1.4' }}>
+                      {ann.content}
+                    </p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
 
           {/* Create Post */}
           <div className="create-post-card">

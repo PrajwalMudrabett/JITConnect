@@ -15,10 +15,27 @@ const announcementSchema = new mongoose.Schema({
     enum: ['low', 'medium', 'high', 'urgent'],
     default: 'medium'
   },
-  createdBy: {
+  targetRoles: {
+    type: [String],
+    enum: ['student', 'faculty', 'alumni', 'department'],
+    default: ['student', 'faculty', 'alumni', 'department']
+  },
+  targetDepartment: {
+    type: String,
+    default: null
+  },
+  targetBranch: {
+    type: String,
+    default: null
+  },
+  researchProject: {
+    type: String,
+    default: null
+  },
+  researchSkillsNeeded: [String],
+  facultyMember: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'User',
-    required: true
+    ref: 'User'
   },
   isActive: {
     type: Boolean,

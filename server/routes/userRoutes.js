@@ -11,7 +11,7 @@ const router = express.Router();
 router.get('/', protect, async (req, res) => {
   try {
     const users = await User.find({ _id: { $ne: req.user._id } })
-      .select('-password')
+      .select('-password -isAdmin')
       .limit(20);
     res.json(users);
   } catch (error) {
@@ -38,7 +38,7 @@ router.get('/search', protect, async (req, res) => {
           ]
         }
       ]
-    }).select('-password');
+    }).select('-password -isAdmin');
     res.json(users);
   } catch (error) {
     res.status(400).json({ message: error.message });
@@ -50,7 +50,7 @@ router.get('/search', protect, async (req, res) => {
 // @access  Private
 router.get('/:id', protect, async (req, res) => {
   try {
-    const user = await User.findById(req.params.id).select('-password');
+    const user = await User.findById(req.params.id).select('-password -isAdmin');
     if (!user) {
       return res.status(404).json({ message: 'User not found' });
     }
@@ -87,6 +87,7 @@ router.put('/profile', protect, async (req, res) => {
         name: updatedUser.name,
         email: updatedUser.email,
         role: updatedUser.role,
+        isAdmin: updatedUser.isAdmin,
         bio: updatedUser.bio,
         profilePic: updatedUser.profilePic,
         coverImage: updatedUser.coverImage,

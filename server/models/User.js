@@ -12,17 +12,33 @@ const userSchema = new mongoose.Schema({
     required: [true, 'Email is required'],
     unique: true,
     lowercase: true,
-    trim: true
+    trim: true,
+    validate: {
+      validator: function(v) {
+        return v && (v.endsWith('@jyothyit.ac.in') || v.endsWith('@jit.ac.in'));
+      },
+      message: 'Please use your official college email (@jyothyit.ac.in or @jit.ac.in)'
+    }
   },
   password: {
     type: String,
     required: [true, 'Password is required'],
-    minlength: 6
+    minlength: 8,
+    validate: {
+      validator: function(v) {
+        return v && v.length >= 8 && /[A-Z]/.test(v) && /[a-z]/.test(v) && /[0-9]/.test(v) && /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(v);
+      },
+      message: 'Password must be at least 8 characters with uppercase, lowercase, number, and special character'
+    }
   },
   role: {
     type: String,
     required: [true, 'Role is required'],
     enum: ['student', 'faculty', 'alumni', 'department']
+  },
+  isAdmin: {
+    type: Boolean,
+    default: false
   },
   // Student fields
   usn: String,
@@ -33,6 +49,8 @@ const userSchema = new mongoose.Schema({
   department: String,
   designation: String,
   experience: String,
+  researchInterests: [String],
+  currentProjects: [String],
   
   // Alumni fields
   batch: String,
@@ -41,6 +59,13 @@ const userSchema = new mongoose.Schema({
   // Department fields
   deptName: String,
   deptDescription: String,
+  events: [{
+    title: String,
+    date: Date,
+    description: String,
+    isActive: Boolean,
+    createdAt: { type: Date, default: Date.now }
+  }],
   
   // Common fields
   bio: {

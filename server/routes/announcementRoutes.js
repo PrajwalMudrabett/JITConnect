@@ -1,23 +1,44 @@
 import express from 'express';
 import Announcement from '../models/Announcement.js';
-import { protect } from '../middleware/auth.js';
+import { protect, adminOnly } from '../middleware/auth.js';
 
 const router = express.Router();
 
-// Admin middleware
-const adminOnly = (req, res, next) => {
-  if (req.user.email !== 'admin@jyothyit.ac.in' && req.user.email !== 'principal@jyothyit.ac.in') {
-    return res.status(403).json({ message: 'Access denied. Admin only.' });
-  }
-  next();
-};
-
 // @route   GET /api/announcements
-// @desc    Get all active announcements
+// @desc    Get announcements based on user role
 // @access  Private
 router.get('/', protect, async (req, res) => {
   try {
-    const announcements = await Announcement.find({ isActive: true })
+    const user = await User.findById(req.user._id).select('role department branch');
+    
+    // Build query based on user role
+    const query = { isActive: true };
+    
+    if (user.role === 'student') {
+      query.$or = [
+        { targetRoles: 'student' },
+        { targetRoles: 'all' }
+      ];
+    } else if (user.role === 'faculty') {
+      query.$or = [
+        { targetRoles: 'faculty' },
+        { targetRoles: 'all' },
+        { facultyMember: req.user._id }
+      ];
+    } else if (user.role === 'alumni') {
+      query.$or = [
+        { targetRoles: 'alumni' },
+        { targetRoles: 'all' }
+      ];
+    } else if (user.role === 'department') {
+      query.$or = [
+        { targetRoles: 'department' },
+        { targetRoles: 'all' },
+        { targetDepartment: user.department }
+      ];
+    }
+    
+    const announcements = await Announcement.find(query)
       .populate('createdBy', 'name email')
       .sort({ priority: -1, createdAt: -1 });
     res.json(announcements);
@@ -31,12 +52,18 @@ router.get('/', protect, async (req, res) => {
 // @access  Private/Admin
 router.post('/', protect, adminOnly, async (req, res) => {
   try {
-    const { title, content, priority } = req.body;
+    const { title, content, priority, targetRoles, targetDepartment, targetBranch, researchProject, researchSkillsNeeded, facultyMember } = req.body;
 
     const announcement = await Announcement.create({
       title,
       content,
       priority,
+      targetRoles: targetRoles || ['student', 'faculty', 'alumni', 'department'],
+      targetDepartment,
+      targetBranch,
+      researchProject,
+      researchSkillsNeeded: researchSkillsNeeded || [],
+      facultyMember: facultyMember || req.user._id,
       createdBy: req.user._id
     });
 
